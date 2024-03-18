@@ -1,0 +1,51 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        p {
+            color: rgb(255, 255, 255); 
+            background-color: rgb(8, 13, 23);
+            width: fit-content;
+            padding: 3px;
+            border-radius: 2px; 
+        }
+        .user {
+            color: rgb(255, 255, 255); 
+            background-color: rgb(32, 85, 201);
+            width: fit-content;
+            padding: 3px;
+            border-radius: 10px;
+        }
+
+        .current-user {
+            color: rgb(255, 255, 255); 
+            background-color: rgb(32, 201, 46);
+            width: fit-content;
+            padding: 3px;
+            border-radius: 10px;
+        }
+        </style>
+</head>
+<body>
+    <div id="authentication-container">
+        <input type="text" id="username-input" placeholder="Enter your name...">
+        <button id="set-username-button">Set Username</button>
+    </div>
+
+    <div id="chat-container" style="display: none;">
+        <div id="user-list"></div>
+        <div id="chat-messages" style="background-color: rgba(50, 50, 189, 0); color: white; width: 30vw; padding:0px 0px 15px 0px;"></div>
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button id="send-button">Send</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
