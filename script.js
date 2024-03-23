@@ -13,6 +13,7 @@ const sendButton = document.getElementById('send-button');
 
 let selectedUser = null;
 let currentUser = null; // Store the current user's username
+let messages = []; // Store all the messages
 
 // Event listener for setting the username
 setUsernameButton.addEventListener('click', () => {
@@ -30,11 +31,14 @@ sendButton.addEventListener('click', () => {
     const message = messageInput.value.trim();
     if (message !== '') {
         if (selectedUser) {
+            // Display the sent message immediately
+            displaySentMessage(currentUser, selectedUser, message);
+            // Emit the message to the server
             socket.emit('private message', { recipient: selectedUser, message });
+            // Add the message to the local messages array
+            messages.push({ sender: currentUser, recipient: selectedUser, content: message });
+            // Clear the message input
             messageInput.value = '';
-            const messageElement = document.createElement('div');
-            messageElement.innerHTML = `<strong>[You to ${selectedUser}]:</strong> ${message}`;
-            chatMessages.appendChild(messageElement);
         } else {
             alert('Please select a user to send a message.');
         }
@@ -52,15 +56,38 @@ userList.addEventListener('click', (event) => {
     }
 });
 
-// Function to display conversation with a selected user
+// Function to display a sent message immediately
+function displaySentMessage(sender, recipient, message) {
+    const messageElement = document.createElement('div');
+    messageElement.innerHTML = `<strong>[You to ${recipient}]:</strong> ${message}`;
+    chatMessages.appendChild(messageElement);
+}
+
+// Function to display conversation with a selected user or create a new one if it doesn't exist
 function displayConversation(username) {
+    // Clear chat messages
     chatMessages.innerHTML = '';
+
+    // Display conversation header
+    const conversationHeader = document.createElement('h3');
+    conversationHeader.textContent = `Conversation with ${username}`;
+    chatMessages.appendChild(conversationHeader);
+
+    // Filter messages relevant to the selected user and display them
+    const relevantMessages = messages.filter(message =>
+        (message.sender === currentUser && message.recipient === username) ||
+        (message.sender === username && message.recipient === currentUser)
+    );
+
+    relevantMessages.forEach(message => {
+        const messageElement = document.createElement('div');
+        messageElement.innerHTML = `<strong>[${message.sender}]:</strong> ${message.content}`;
+        chatMessages.appendChild(messageElement);
+    });
+
+    // Display chat container
     chatContainer.style.display = 'block';
     authenticationContainer.style.display = 'none';
-    const conversationDiv = document.createElement('div');
-    conversationDiv.classList.add('conversation');
-    conversationDiv.innerHTML = `<h3>Conversation with ${username}</h3>`;
-    chatMessages.appendChild(conversationDiv);
 }
 
 // Socket event listeners
@@ -103,42 +130,17 @@ socket.on('userLeft', (username) => {
     }
 });
 
-// Store conversation elements in an object
-const conversationElements = {};
-
-// Function to display conversation with a selected user or create a new one if it doesn't exist
-function displayConversation(username) {
-    // Check if conversation element already exists
-    if (!conversationElements[username]) {
-        // Create a new conversation element
-        const newConversationDiv = document.createElement('div');
-        newConversationDiv.classList.add('conversation');
-        newConversationDiv.innerHTML = `<h3>Conversation with ${username}</h3>`;
-        chatMessages.appendChild(newConversationDiv);
-        
-        // Store the conversation element in the object
-        conversationElements[username] = newConversationDiv;
-    }
-    
-    // Display the selected conversation
-    Object.values(conversationElements).forEach(conversation => {
-        conversation.style.display = 'none';
-    });
-    conversationElements[username].style.display = 'block';
-}
-
 // Socket event listener for receiving private messages
 socket.on('private message', ({ sender, message }) => {
-    // Open conversation window for the sender
-    displayConversation(sender);
-    
-    // Create message element and append it to the corresponding conversation
-    const messageElement = document.createElement('div');
-    messageElement.innerHTML = `<strong>[${sender}]:</strong> ${message}`;
-    conversationElements[sender].appendChild(messageElement);
+    // Add the received message to the local messages array
+    messages.push({ sender, recipient: currentUser, content: message });
+    // Display the message if it's from the selected user
+    if (selectedUser === sender) {
+        const messageElement = document.createElement('div');
+        messageElement.innerHTML = `<strong>[${sender}]:</strong> ${message}`;
+        chatMessages.appendChild(messageElement);
+    }
 });
-
-
 
 socket.on('open conversation', (sender) => {
     if (!selectedUser || selectedUser !== sender) {
@@ -147,7 +149,6 @@ socket.on('open conversation', (sender) => {
         displayConversation(selectedUser);
     }
 });
-
 
 socket.on('errorMessage', (message) => {
     alert(message);
