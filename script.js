@@ -51,7 +51,9 @@ userList.addEventListener('click', (event) => {
     
     if (target && target.classList.contains('user')) {
         selectedUser = target.innerText;
-        chatMessages.style.backgroundColor = 'rgb(50, 50, 189)';
+        chatMessages.style.backgroundColor = '#06826b';
+        chatMessages.style.boxShadow = '0 0 10px 4px #eee';
+        chatMessages.style.borderRadius = '10px';
         displayConversation(selectedUser);
     }
 });
@@ -60,18 +62,21 @@ userList.addEventListener('click', (event) => {
 function displaySentMessage(sender, recipient, message) {
     const messageElement = document.createElement('div');
     messageElement.innerHTML = `<strong>[You to ${recipient}]:</strong> ${message}`;
-    chatMessages.appendChild(messageElement);
+    messageElement.classList.add('sent-message', 'alert', 'alert-primary', 'my-2', 'py-2', 'px-3', 'rounded');
+    chatMessages.querySelector('.card-body').appendChild(messageElement);
 }
+
 
 // Function to display conversation with a selected user or create a new one if it doesn't exist
 function displayConversation(username) {
     // Clear chat messages
-    chatMessages.innerHTML = '';
+    chatMessages.querySelector('.card-body').innerHTML = '';
 
     // Display conversation header
     const conversationHeader = document.createElement('h3');
     conversationHeader.textContent = `Conversation with ${username}`;
-    chatMessages.appendChild(conversationHeader);
+    chatMessages.querySelector('.card-header').style.borderRadius = '10px 10px 0 0';
+    chatMessages.querySelector('.card-header').appendChild(conversationHeader);
 
     // Filter messages relevant to the selected user and display them
     const relevantMessages = messages.filter(message =>
@@ -82,8 +87,9 @@ function displayConversation(username) {
     relevantMessages.forEach(message => {
         const messageElement = document.createElement('div');
         messageElement.innerHTML = `<strong>[${message.sender}]:</strong> ${message.content}`;
-        chatMessages.appendChild(messageElement);
-    });
+        messageElement.classList.add('sent-message', 'alert', 'alert-primary', 'my-2', 'py-2', 'px-3', 'rounded');
+    chatMessages.querySelector('.card-body').appendChild(messageElement);
+});
 
     // Display chat container
     chatContainer.style.display = 'block';
@@ -97,28 +103,32 @@ socket.on('userExists', (message) => {
 });
 
 socket.on('userList', (users) => {
-    userList.innerHTML = '<p >please click on the name of user that you want to contact wmb3da ab3tlou msg </p><p>Users li rahom Online : (li blekhder c vous ! )</p>';
+    userList.innerHTML = '<p class="text-muted">Click on a user to start a conversation</p>';
     
     users.forEach(user => {
-        const userElement = document.createElement('div');
+        const userElement = document.createElement('a');
         userElement.innerText = user;
-        userElement.classList.add('user');
+        userElement.href = '#';
+        userElement.classList.add('list-group-item', 'list-group-item-action', 'user');
         if (user === currentUser) {
-            userElement.classList.add('current-user'); // Apply special style to current user's username
+            // userElement.classList.add('active'); // Apply special style to current user's username
+            userElement.style.backgroundColor = 'hsl(352.86deg 100% 44.51%)';
+            userElement.style.color = 'white';
         }
         userList.appendChild(userElement);
     });
 });
 
 socket.on('userJoined', (username) => {
-    const userElement = document.createElement('div');
+    const userElement = document.createElement('a');
     userElement.innerText = username;
-    userElement.classList.add('user');
+    userElement.href = '#';
+    userElement.classList.add('list-group-item', 'list-group-item-action', 'user');
     userList.appendChild(userElement);
 });
 
 socket.on('userLeft', (username) => {
-    const userElements = document.querySelectorAll('.user');
+    const userElements = userList.querySelectorAll('.user');
     userElements.forEach(element => {
         if (element.innerText === username) {
             element.remove();
@@ -126,7 +136,7 @@ socket.on('userLeft', (username) => {
     });
     if (selectedUser === username) {
         selectedUser = null;
-        chatMessages.innerHTML = '';
+        chatMessages.querySelector('.card-body').innerHTML = '';
     }
 });
 
@@ -138,7 +148,8 @@ socket.on('private message', ({ sender, message }) => {
     if (selectedUser === sender) {
         const messageElement = document.createElement('div');
         messageElement.innerHTML = `<strong>[${sender}]:</strong> ${message}`;
-        chatMessages.appendChild(messageElement);
+        messageElement.classList.add('sent-message', 'alert', 'alert-primary', 'my-2', 'py-2', 'px-3', 'rounded');
+        chatMessages.querySelector('.card-body').appendChild(messageElement);
     }
 });
 
