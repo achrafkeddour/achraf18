@@ -48,12 +48,9 @@ sendButton.addEventListener('click', () => {
 // Event listener for selecting a user from the list
 userList.addEventListener('click', (event) => {
     const target = event.target;
-    
-    if (target && target.classList.contains('user')) {
-        selectedUser = target.innerText;
-        chatMessages.style.backgroundColor = '#06826b';
-        chatMessages.style.boxShadow = '0 0 10px 4px #eee';
-        chatMessages.style.borderRadius = '10px';
+
+    if (target && target.classList.contains('list-group-item')) {
+        selectedUser = target.innerText.trim();
         displayConversation(selectedUser);
     }
 });
@@ -63,20 +60,18 @@ function displaySentMessage(sender, recipient, message) {
     const messageElement = document.createElement('div');
     messageElement.innerHTML = `<strong>[You to ${recipient}]:</strong> ${message}`;
     messageElement.classList.add('sent-message', 'alert', 'alert-primary', 'my-2', 'py-2', 'px-3', 'rounded');
-    chatMessages.querySelector('.card-body').appendChild(messageElement);
+    chatMessages.appendChild(messageElement);
 }
-
 
 // Function to display conversation with a selected user or create a new one if it doesn't exist
 function displayConversation(username) {
     // Clear chat messages
-    chatMessages.querySelector('.card-body').innerHTML = '';
+    chatMessages.innerHTML = '';
 
     // Display conversation header
-    const conversationHeader = document.createElement('h3');
-    conversationHeader.textContent = `Conversation with ${username}`;
-    chatMessages.querySelector('.card-header').style.borderRadius = '10px 10px 0 0';
-    chatMessages.querySelector('.card-header').appendChild(conversationHeader);
+    const conversationHeader = document.createElement('div');
+    conversationHeader.innerHTML = `<h3 class="mb-0">Conversation with ${username}</h3>`;
+    chatMessages.appendChild(conversationHeader);
 
     // Filter messages relevant to the selected user and display them
     const relevantMessages = messages.filter(message =>
@@ -86,57 +81,58 @@ function displayConversation(username) {
 
     relevantMessages.forEach(message => {
         const messageElement = document.createElement('div');
-        messageElement.innerHTML = `<strong>[${message.sender}]:</strong> ${message.content}`;
+        if (message.sender === currentUser) {
+            messageElement.innerHTML = `<strong>[You]:</strong> ${message.content}`;
+        } else {
+            messageElement.innerHTML = `<strong>[${message.sender}]:</strong> ${message.content}`;
+        }
         messageElement.classList.add('sent-message', 'alert', 'alert-primary', 'my-2', 'py-2', 'px-3', 'rounded');
-    chatMessages.querySelector('.card-body').appendChild(messageElement);
-});
+        chatMessages.appendChild(messageElement);
+    });
 
-    // Display chat container
-    chatContainer.style.display = 'block';
-    authenticationContainer.style.display = 'none';
+    // Scroll to the bottom of the chat messages
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// Socket event listeners
 
+// Socket event listeners
 socket.on('userExists', (message) => {
     alert(message);
 });
 
 socket.on('userList', (users) => {
-    userList.innerHTML = '<p class="text-muted">Click on a user to start a conversation</p>';
-    
+    userList.innerHTML = '';
     users.forEach(user => {
-        const userElement = document.createElement('a');
-        userElement.innerText = user;
-        userElement.href = '#';
-        userElement.classList.add('list-group-item', 'list-group-item-action', 'user');
-        if (user === currentUser) {
-            // userElement.classList.add('active'); // Apply special style to current user's username
-            userElement.style.backgroundColor = 'hsl(352.86deg 100% 44.51%)';
-            userElement.style.color = 'white';
+        if (user !== currentUser) {
+            const userElement = document.createElement('a');
+            userElement.innerText = user;
+            userElement.href = '#';
+            userElement.classList.add('list-group-item', 'list-group-item-action');
+            userList.appendChild(userElement);
         }
-        userList.appendChild(userElement);
     });
 });
 
 socket.on('userJoined', (username) => {
-    const userElement = document.createElement('a');
-    userElement.innerText = username;
-    userElement.href = '#';
-    userElement.classList.add('list-group-item', 'list-group-item-action', 'user');
-    userList.appendChild(userElement);
+    if (username !== currentUser) {
+        const userElement = document.createElement('a');
+        userElement.innerText = username;
+        userElement.href = '#';
+        userElement.classList.add('list-group-item', 'list-group-item-action');
+        userList.appendChild(userElement);
+    }
 });
 
 socket.on('userLeft', (username) => {
-    const userElements = userList.querySelectorAll('.user');
+    const userElements = userList.querySelectorAll('.list-group-item');
     userElements.forEach(element => {
-        if (element.innerText === username) {
+        if (element.innerText.trim() === username) {
             element.remove();
         }
     });
     if (selectedUser === username) {
         selectedUser = null;
-        chatMessages.querySelector('.card-body').innerHTML = '';
+        chatMessages.innerHTML = '';
     }
 });
 
@@ -149,14 +145,15 @@ socket.on('private message', ({ sender, message }) => {
         const messageElement = document.createElement('div');
         messageElement.innerHTML = `<strong>[${sender}]:</strong> ${message}`;
         messageElement.classList.add('sent-message', 'alert', 'alert-primary', 'my-2', 'py-2', 'px-3', 'rounded');
-        chatMessages.querySelector('.card-body').appendChild(messageElement);
+        chatMessages.appendChild(messageElement);
+        // Scroll to the bottom of the chat messages
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 });
 
 socket.on('open conversation', (sender) => {
     if (!selectedUser || selectedUser !== sender) {
         selectedUser = sender;
-        chatMessages.style.backgroundColor = 'rgb(50, 50, 189)';
         displayConversation(selectedUser);
     }
 });
