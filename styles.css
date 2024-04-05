@@ -1,14 +1,14 @@
-
-/* Add your custom CSS styles here */
-body, html {
+/* styles.css */
+body,
+html {
     height: 100%;
-    
-    /* background-color: hsl(158, 92%, 24%); */
-    background-color: #05715d;
-    /* background-color: #06826b; */
+    background-color: #eff2f5;
 }
 
-.container-fluid, .row, .col-md-3, .col-md-9 {
+.container-fluid,
+.row,
+.col-md-3,
+.col-md-9 {
     height: 100%;
 }
 
@@ -26,7 +26,6 @@ body, html {
 .list-group {
     overflow-y: auto;
     height: calc(100% - 41px);
-    
 }
 
 .chat-container {
@@ -56,20 +55,19 @@ body, html {
 .btn-primary {
     border-radius: 20px;
     padding: 10px 20px;
-    background-color: hsl(352.86deg 100% 44.51%);
-    border-color: hsl(352.86deg 100% 44.51%);
-}
-
-.btn-primary:hover {
     background-color: #0088cc;
     border-color: #0088cc;
 }
 
-.list-group p {
-    color: white !important;;
+.btn-primary:hover {
+    background-color: #005580;
+    border-color: #005580;
 }
 
+.list-group p {
+    color: #fff !important;
+}
 
 .bg-primary {
-    background-color: hsl(352.86deg 100% 44.51%) !important;
+    background-color: #0088cc !important;
 }
