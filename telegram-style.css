@@ -1,0 +1,170 @@
+/* telegram-style.css */
+
+/* General styling */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #eff2f5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+/* Authentication container */
+#authentication-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Username input */
+#username-input {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* Set username button */
+#set-username-button {
+    width: 300px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0088cc;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Chat container */
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* User list */
+#user-list {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #eff2f5;
+}
+
+.list-group-item {
+    cursor: pointer;
+    padding: 10px 20px;
+    border: none;
+    border-bottom: 1px solid #d1d8e0;
+    font-size: 16px;
+    color: #000;
+    transition: background-color 0.3s ease;
+}
+
+.list-group-item:hover {
+    background-color: #e8f0fe;
+}
+
+/* Chat messages */
+#chat-messages {
+    flex: 5;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #fff;
+}
+
+/* Message input container */
+.input-group {
+    margin-bottom: 20px;
+}
+
+#message-input {
+    width: calc(100% - 90px);
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#send-button {
+    width: 80px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #00cc30;
+    color: #fff;
+    cursor: pointer;
+}
+
+#send-button:hover {
+    background-color: #00802d;
+}
+
+/* Customize to resemble Telegram */
+body {
+    background-color: #eff2f5;
+}
+
+.container {
+    max-width: 100%;
+}
+
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #d1d8e0;
+    color: #000;
+    padding: 10px 20px;
+}
+
+.list-group-item:hover {
+    background-color: #e8f0fe;
+}
+
+.card-header,
+.card-footer {
+    background-color: #0088cc; /* Changed to Telegram blue */
+    color: #fff;
+}
+
+.card {
+    border: none;
+}
+
+.form-control {
+    border-radius: 25px;
+    border-color: #d1d8e0;
+}
+
+.btn-primary {
+    border-radius: 25px;
+    background-color: #0088cc;
+    border-color: #0088cc;
+}
+
+.btn-primary:hover {
+    background-color: #0077b6; /* Darker shade of Telegram blue */
+    border-color: #0077b6;
+}
+
+@media only screen and (max-width: 768px) {
+    #set-username-button {
+        width: 100%;
+    }
+
+    #message-input {
+        width: calc(100% - 100px);
+    }
+
+    #send-button {
+        width: 100px;
+    }
+}
