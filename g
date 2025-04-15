@@ -658,4 +658,210 @@
     <!-- Experience Section -->
     <section id="experience" class="experience-section">
         <div class="container">
-            <h2 class="animate-on-scroll">My Jou
+            <h2 class="animate-on-scroll">My Journey</h2>
+            <div class="timeline">
+                <div class="timeline-item left animate-on-scroll">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h5>2019 - Internship at Djezzy Algérie</h5>
+                        <p>Supported network setup and troubleshooting for mobile services.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right animate-on-scroll">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h5>2020 - Internship at Djezzy Algérie</h5>
+                        <p>Enhanced 4G network performance through data analysis.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left animate-on-scroll">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h5>2021 - Internship at Djezzy Algérie</h5>
+                        <p>Coordinated a project to expand network coverage in rural Algeria.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right animate-on-scroll">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h5>2022 - Graduated from École Nationale Polytechnique d'Oran</h5>
+                        <p>Completed degree in Networks & Telecommunications Engineering.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio-section">
+        <div class="container">
+            <h2 class="animate-on-scroll">My Projects</h2>
+            <div class="row">
+                <div class="col-md-4 animate-on-scroll">
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/400x300?text=Chat+App" alt="Chat App">
+                        <div class="portfolio-overlay">
+                            <h5>Arab Chat</h5>
+                            <p>Real-time chat platform using Node.js and MySQL.</p>
+                            <a href="#" target="_blank">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 animate-on-scroll">
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/400x300?text=E-Commerce" alt="E-Commerce">
+                        <div class="portfolio-overlay">
+                            <h5>E-Commerce Platform</h5>
+                            <p>Online store with secure payment gateways.</p>
+                            <a href="#" target="_blank">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 animate-on-scroll">
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/400x300?text=Network+Tool" alt="Network Tool">
+                        <div class="portfolio-overlay">
+                            <h5>Network Dashboard</h5>
+                            <p>Tool for monitoring network performance in real-time.</p>
+                            <a href="#" target="_blank">View Project</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="animate-on-scroll">Get in Touch</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-6 animate-on-scroll">
+                    <form id="contactForm">
+                        <div class="mb-4">
+                            <input type="text" class="form-control" id="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="mb-4">
+                            <input type="email" class="form-control" id="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="mb-4">
+                            <textarea class="form-control" id="message" rows="6" placeholder="Your Message" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-submit">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2025 [Your Name] | Jijel, Algeria</p>
+            <div class="social-links">
+                <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script>
+        // Splash Screen
+        window.addEventListener('load', () => {
+            const splash = document.getElementById('splash-screen');
+            setTimeout(() => {
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                }, 500);
+            }, 2000);
+        });
+
+        // Three.js Hero Animation
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('three-canvas').appendChild(renderer.domElement);
+
+        const geometry = new THREE.IcosahedronGeometry(10, 1);
+        const material = new THREE.MeshBasicMaterial({
+            color: 0x8b5cf6,
+            wireframe: true
+        });
+        const icosahedron = new THREE.Mesh(geometry, material);
+        scene.add(icosahedron);
+
+        camera.position.z = 20;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            icosahedron.rotation.x += 0.01;
+            icosahedron.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+
+        // Navbar Scroll Effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            const navbar = document.querySelector('.navbar');
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                navbar.classList.add('navbar-hidden');
+            } else {
+                navbar.classList.remove('navbar-hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Scroll Animations
+        const animateElements = document.querySelectorAll('.animate-on-scroll');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        animateElements.forEach(el => observer.observe(el));
+
+        // Smooth Scroll
+        document.querySelectorAll('.nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Form Submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            alert(`Thank you, ${name}! Your message has been sent.`);
+            this.reset();
+        });
+    </script>
+</body>
+</html>
